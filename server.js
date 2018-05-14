@@ -23,8 +23,6 @@ app.use('/test', function (req, res, next) {
   res.status(200).end();
 });
 
-// app.use('/api', require('./controllers/authentication_controller'))
-
 app.use('*', (req, res, next) => {
   console.log('This endpoint does not exsist');
   next("Deze endpoint bestaat niet");
