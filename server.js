@@ -1,6 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
+const ApiError = require('./model/ApiError')
 
 const port = process.env.PORT || 3000 || config.webPort // 3000 // config.webPort || 
 
@@ -18,9 +19,16 @@ app.use('*', function(req, res, next){
     next()
 })
 
+app.use('/test', function (req, res, next) {
+    console.log("test")
+    res.status(200).end()
+})
+
+app.use('/api', require('controllers/authentication_controller'))
+
 
 app.use('*', function (req, res, next) {
-    console.log('De endpoint die je zocht bestaat niet')
+    console.log('This endpoint does not exsist')
     next("Deze endpoint bestaat niet")
 })
 
