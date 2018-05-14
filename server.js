@@ -29,6 +29,8 @@ app.use((err, req, res, next) => {
     res.status(404).json(error).end()
 })
 
+const port = process.env.PORT || config.webPort
+
 app.listen(port, function () {
     console.log('De server luistert op port ' + port); //log the actual active port, not some static number
 });
