@@ -28,9 +28,10 @@ app.use((err, req, res, next) => {
     console.log('Catch-all error handler was called.')
     console.log(err.toString())
 
-    const error = new ApiError(err.toString(), 404)
+    // const error = new ApiError(err.toString(), 404)
 
-    res.status(404).json(error).end()
+    // res.status(404).json(error).end()
+    res.status(404).json(err.toString()).end()
 })
 
 app.listen(port, function () {
