@@ -1,11 +1,10 @@
-
 class ApiError {
 
-    constructor(message, code){
-        this.message = message;
-        this.code = code;
-        this.datetime = Date()
-    }
+  constructor(message, code){
+    this.message = message;
+    this.code = code;
+    this.datetime = Date();
+  }
 
 }
 
