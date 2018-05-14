@@ -2,7 +2,7 @@ const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 
-const port = process.env.PORT || config.webPort
+const port = process.env.PORT || config.webPort || 3000
 
 let app = express()
 
