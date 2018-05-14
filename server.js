@@ -2,8 +2,9 @@ const express = require('express')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const ApiError = require('./model/ApiError')
+const config = require('./config/config');
 
-const port = process.env.PORT || 3000 || config.webPort // 3000 // config.webPort || 
+const port = process.env.PORT || config.webPort
 
 console.log('s');
 
