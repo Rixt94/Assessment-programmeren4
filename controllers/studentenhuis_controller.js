@@ -1,5 +1,6 @@
 const auth =  require('../auth/authentication');
 const assert = require('assert');
+const db = require('../config/db');
 
 module.exports = {
   makeStudenthome(req, res, next) {
@@ -12,8 +13,7 @@ module.exports = {
 
   },
   getAllStudenthome(req, res, next) {
-    console.log("get all studenthomes")
-    
+    console.log("get all studenthomes");
     db.query('SELECT * FROM studentenhuis', (error, rows, fields) => {
       if(error){
         next(error);

@@ -1,6 +1,6 @@
 var express = require('express');
 var routes = express.Router();
-var controller = require('../routes/deelnamers_routes');
+var controller = require('../controllers/deelnemers_controller');
 
 module.exports = {}
 

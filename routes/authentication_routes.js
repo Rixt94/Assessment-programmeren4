@@ -1,6 +1,6 @@
 var express = require('express');
 var routes = express.Router();
-var controller = require('../routes/authentication_routes');
+var controller = require('../controllers/authentication_controller');
 
 module.exports = {}
 
