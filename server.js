@@ -14,7 +14,6 @@ app.use('*', function(req, res, next){
     next()
 })
 
-app.use('/api', authenrication_routes)
 
 app.use('*', function (req, res, next) {
     console.log('De endpoint die je zocht bestaat niet')
