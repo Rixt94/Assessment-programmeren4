@@ -4,6 +4,8 @@ const bodyParser = require('body-parser')
 
 const port = process.env.PORT || config.webPort // 3000 // config.webPort || 
 
+console.log('s');
+
 let app = express()
 
 // bodyParser zorgt dat we de body uit een request kunnen gebruiken,
