@@ -24,7 +24,7 @@ app.use('/test', function (req, res, next) {
     res.status(200).end()
 })
 
-app.use('/api', require('controllers/authentication_controller'))
+// app.use('/api', require('./controllers/authentication_controller'))
 
 
 app.use('*', function (req, res, next) {
