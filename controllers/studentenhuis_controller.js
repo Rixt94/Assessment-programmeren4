@@ -14,6 +14,10 @@ module.exports = {
         const id = 1;
         const naam = req.body.naam;
         const adres = req.body.adres;
+
+        console.log(req.body);
+        console.log("Naam: " + naam);
+        console.log("Adres: " + adres);
         let userId = 1; // To be changed according to token values
         //const userId = req.body.UserID
         console.log('name of ' + naam + ' locaded at ' + adres + ' form user: ' + userId)
@@ -26,7 +30,7 @@ module.exports = {
             expect(adres).to.not.to.be.empty;
             expect(naam.length).to.be.above(2, "the length of the name should be above 2 charcters");
             expect(adres.length).to.be.above(2, "the length of the adres should be above 2 charcters");
-            expect(res.body).should.be.a('object');
+            //expect(res.body).should.be.a('object');
         }catch(ex) {
             const error = new ApiError(ex.toString(), 422)
             next(error)
@@ -36,7 +40,7 @@ module.exports = {
         let studenthome = new house(id, naam, adres, userId);
         houselist.push(studenthome)
 
-        db.query('INSERT INTO `studentenhuis` (`Naam`, `Adres`, `UserID`) VALUES ( "' + naam + '", "' + adres + '", "' + userId +')', (error, rows, fields) => {
+        db.query('INSERT INTO studentenhuis (Naam, Adres, UserID) VALUES ( "' + naam + '", "' + adres + '", "' + userId +'")', (error, rows, fields) => {
             if(error) {
                 next(error);
             } else {
@@ -44,100 +48,57 @@ module.exports = {
                 res.sendStatus(200);
             }
         });
-
-        // let home = req.body;
-      // let query ={
-      //     sql: 'INSERT INTO `studentenhuis` (Naam, Adres, UserID) VALUES (?, ?, ?)',
-      //     values: [home.naam, home.aders, home.UserID]
-      // };
-      //
-      // console.dir(home);
-      // console.log("de query: " + query.sql);
-      //
-      // res.contentType('application/json');
-      // db.query(query , (error, rows, fields) => {
-      //     if(error){
-      //         res.status(400);
-      //         res.json(error);
-      //     }else {
-      //         res.status(200);
-      //         res.json(rows);
-      //     }
-      //
-      // });
-  },
+    },
   putStudenthome(req, res, next) {
       console.log('change a student home');
 
       const id = req.params.id;
       const naam = req.body.naam;
-      const adres = req.body.aders;
-      const userId = req.body.userId
+      const adres = req.body.adres;
+
+      console.log(req.body);
+      console.log("Naam: " + naam);
+      console.log("Adres: " + adres);
+      let userId = 1; // To be changed according to token values
       console.log('We got id: ' + id + ' of ' + naam + ' locaded at ' + adres + ' form user: ' + userId)
 
-      var home = req.body;
-      const id = req.params.id;
-      var query ={
-          sql: 'UPDATE `studentenhuis`SET Naam=?, Adres=? WHERE ID=?',
-          values: [home.naam, home.aders, id]
-      };
+      try{
+          //expect(id).to.be.at.least(0, "Id munst be a number and above 0");
+          expect(naam).to.be.a('string');
+          expect(adres).to.be.a('string');
+          expect(naam).to.not.to.be.empty;
+          expect(adres).to.not.to.be.empty;
+          expect(naam.length).to.be.above(2, "the length of the name should be above 2 charcters");
+          expect(adres.length).to.be.above(2, "the length of the adres should be above 2 charcters");
+          //expect(res.body).should.be.a('object');
+      }catch(ex) {
+          const error = new ApiError(ex.toString(), 422)
+          next(error)
+          return
+      }
 
-      console.dir(home);
-      console.log("de query: " + query.sql);
+      let studenthome = new house(id, naam, adres, userId);
+      houselist.push(studenthome)
 
-      res.contentType('application/json');
-      db.query(query , (error, rows, fields) => {
-          if (error) {
-              res.status(400);
-              res.json(error);
+      db.query('UPDATE `studentenhuis` SET Naam = "' + naam + '", Adres = "' + adres + '"WHERE ID = ' + userId, (error, rows, fields) => {
+          if(error) {
+              next(error);
           } else {
-              res.status(200);
-              res.json(rows);
+              console.log(req.body.id);
+              res.sendStatus(200);
           }
-      }).end();
-
-      // db.query('UPDATE `studentenhuis`SET Naam=' + naam + ', Adres ' + adres + 'WHERE ID=' + id, (error, rows, fields) => {
-      //     if (error) {
-      //         next(error);
-      //     } else {
-      //         res.status(200).json({
-      //             result: rows
-      //         }).end();
-      //     }
-      // });
+      });
   },
   deleteStudenthome(req, res, next) {
     const id = req.params.id;
 
-      let home = req.body;
-      const id = req.params.id;
-      let query ={
-          sql: 'DELETE FROM `studentenhuis WHERE ID=?',
-          values: [id]
-      };
-
-      console.dir(home);
-      console.log("de query: " + query.sql);
-
-      res.contentType('application/json');
-
-      const removedPerson = personlist.splice(id, 1)
-      if(removedPerson.length === 1) {
-          db.query(query , (error, rows, fields) => {
-              if (error) {
-                  res.status(400);
-                  res.json(error);
-              } else {
-                  res.status(200);
-                  res.json(rows);
-              }
-          }).end();
-          //res.status(200).json(removedPerson).end();
-      } else {
-          let error = {
-              message: "Person was not found"
-          }
+      try{
+          expect(id).to.exist;
+          //expect(res.body).should.be.a('object');
+      }catch(ex) {
+          const error = new ApiError(ex.toString(), 422)
           next(error)
+          return
       }
 
     db.query('DELETE FROM studentenhuis WHERE ID='+ id, (error, rows, fields)  =>{
