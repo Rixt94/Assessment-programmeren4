@@ -1,4 +1,3 @@
-//const auth =  require('../auth/authentication');
 const assert = require('assert');
 const db = require('../config/db');
 const ApiError = require('../model/ApiError')
