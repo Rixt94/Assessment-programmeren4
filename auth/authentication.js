@@ -1,16 +1,18 @@
 const settings = require('../config/config.json');
 const moment = require('moment');
 const jwt = require('jwt-simple');
+const db = require('../config/db');
 
 //
 // Encode (van username naar token)
 //
 
-encodeToken = (username) => {
+encodeToken = (id, email) => {
   const playload = {
     exp: moment().add(10, 'days').unix(),
     iat: moment().unix(),
-    sub: username
+    sub: id,
+    val: email
   };
   return jwt.encode(playload, settings.secretkey);
 }
