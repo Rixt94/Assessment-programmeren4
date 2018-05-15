@@ -1,4 +1,3 @@
-//const auth =  require('../auth/authentication');
 const assert = require('assert');
 const db = require('../config/db');
 const expect = require('chai').expect;
@@ -22,6 +21,9 @@ module.exports = {
         //const userId = req.body.UserID
         console.log('name of ' + naam + ' locaded at ' + adres + ' form user: ' + userId)
 
+        let studenthome = new house(id, naam, adres, userId);
+        houselist.push(studenthome)
+
         try{
             //expect(id).to.be.at.least(0, "Id munst be a number and above 0");
             expect(naam).to.be.a('string');
@@ -36,9 +38,6 @@ module.exports = {
             next(error)
             return
         }
-
-        let studenthome = new house(id, naam, adres, userId);
-        houselist.push(studenthome)
 
         db.query('INSERT INTO studentenhuis (Naam, Adres, UserID) VALUES ( "' + naam + '", "' + adres + '", "' + userId +'")', (error, rows, fields) => {
             if(error) {
@@ -61,6 +60,7 @@ module.exports = {
       console.log("Adres: " + adres);
       let userId = 1; // To be changed according to token values
       console.log('We got id: ' + id + ' of ' + naam + ' locaded at ' + adres + ' form user: ' + userId)
+
 
       try{
           //expect(id).to.be.at.least(0, "Id munst be a number and above 0");
@@ -94,7 +94,8 @@ module.exports = {
 
       try{
           expect(id).to.exist;
-          //expect(res.body).should.be.a('object');
+          //expect(res.body).should
+          // .be.a('object');
       }catch(ex) {
           const error = new ApiError(ex.toString(), 422)
           next(error)
