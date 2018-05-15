@@ -15,11 +15,24 @@ module.exports = {
       const userId = req.body.UserID
       console.log('We got id: ' + id + ' of ' + naam + ' locaded at ' + adres + ' form user: ' + userId)
 
+      ry{
+          expect(id).to.be.at.least(0 ["Id munst be a number and above 0"]);
+          expect(userId).to.be.at.least(0 ["UserId munst be a number and above 0"]);
+          expect(naam).to.be.a('string');
+          expect(adres).to.be.a('string');
+          expect(naam).to.not.to.be.empty;
+          expect(adres).to.not.to.be.empty;
+          expect(naam.length).to.be.above(2 ["the length of the name should be above 2 charcters"]);
+          expect(adres.length).to.be.above(2 ["the length of the adres should be above 2 charcters"]);
+          expect(res.body).should.be.a('object');
+      }catch(ex) {
+          const error = new ApiError(ex.toString(), 422)
+          next(error)
+          return
+      }
+
       let studenthome = new house(id, naam, adres, userId);
       // houselist.push(studenthome)
-
-      assert(req.body.naam, "You must must give the house a name");
-      assert(req.body.aders, "You must add your address");
 
       let home = req.body;
       let query ={
