@@ -20,7 +20,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "“.node_modules/.bin/mocha – reporer spec –exit",
+    "test": ".node_modules/.bin/mocha – reporer spec –exit",
     "start": "node server.js"
   },
   "repository": {

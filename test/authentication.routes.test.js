@@ -66,12 +66,12 @@ describe('Registration', () => {
               "email": "abc@def.nl"
           }])
           .end((err, res) => {
-              res.should.have.status(400);
+              res.should.have.status(412);
               res.body.should.be.a('object');
 
               let error = res.body
               error.should.have.property('message')
-              error.should.have.property('code').equals(400)
+              error.should.have.property('code').equals(412)
               error.should.have.property('datetime')
               done();
           })
@@ -86,12 +86,12 @@ describe('Registration', () => {
               "email": "abc@def.nl"
           })
           .end((err, res) =>{
-              res.should.have.status(404);
+              res.should.have.status(412);
               res.body.should.be.a('object');
 
               let error = res.body
               error.should.have.property('message')
-              error.should.have.property('code').equals(404)
+              error.should.have.property('code').equals(412)
               error.should.have.property('datetime')
               done();
           });
@@ -101,11 +101,20 @@ describe('Registration', () => {
       chai.request(server)
           .post('api/register')
           .send({
-              "firstname": "ABC",
+              "firstname": "AB",
               "lastname": "DEF",
               "email": "abc@def.nl"
           })
-    done();
+          .end((err, res) =>{
+              res.should.have.status(412);
+              res.body.should.be.a('object');
+
+              let error = res.body
+              error.should.have.property('message')
+              error.should.have.property('code').equals(412)
+              error.should.have.property('datetime')
+              done();
+          });
   });
 
   it('should throw an error when no lastname is provided', (done) => {
@@ -116,12 +125,12 @@ describe('Registration', () => {
               "email": "abc@def.nl"
           })
           .end((err, res) =>{
-              res.should.have.status(404);
+              res.should.have.status(412);
               res.body.should.be.a('object');
 
               let error = res.body
               error.should.have.property('message')
-              error.should.have.property('code').equals(404)
+              error.should.have.property('code').equals(412)
               error.should.have.property('datetime')
               done();
           });
@@ -135,7 +144,16 @@ describe('Registration', () => {
               "lastname": "DEF",
               "email": "abc@def.nl"
           })
-    done();
+          .end((err, res) =>{
+              res.should.have.status(412);
+              res.body.should.be.a('object');
+
+              let error = res.body
+              error.should.have.property('message')
+              error.should.have.property('code').equals(412)
+              error.should.have.property('datetime')
+              done();
+          });
   });
 
   it('should throw an error when email is invalid', (done) => {
@@ -144,9 +162,18 @@ describe('Registration', () => {
           .send({
               "firstname": "ABC",
               "lastname": "DEF",
-              "email": "abc@def.nl"
+              "email": "abcdef.nl"
           })
-    done();
+          .end((err, res) =>{
+              res.should.have.status(412);
+              res.body.should.be.a('object');
+
+              let error = res.body
+              error.should.have.property('message')
+              error.should.have.property('code').equals(412)
+              error.should.have.property('datetime')
+              done();
+          });
   });
 });
 
@@ -159,6 +186,11 @@ describe('Login', () => {
               "lastname": "DEF",
               "email": "abc@def.nl"
           })
+          .end((err, res) =>{
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          })
+
     done();
   });
 
@@ -168,9 +200,17 @@ describe('Login', () => {
           .send({
               "firstname": "ABC",
               "lastname": "DEF",
-              "email": "abc@def.nl"
           })
-    done();
+          .end((err, res) =>{
+              res.should.have.status(412);
+              res.body.should.be.a('object');
+
+              let error = res.body
+              error.should.have.property('message')
+              error.should.have.property('code').equals(412)
+              error.should.have.property('datetime')
+              done();
+          });
   });
 
   it('should throw an error when email exists but password is invalid', (done) => {
@@ -181,7 +221,16 @@ describe('Login', () => {
               "lastname": "DEF",
               "email": "abc@def.nl"
           })
-    done();
+          .end((err, res) => {
+              res.should.have.status(401);
+              res.body.should.be.a('object');
+
+              let error = res.body
+              error.should.have.property('message')
+              error.should.have.property('code').equals(401)
+              error.should.have.property('datetime')
+              done();
+          })
   });
 
   it('should throw an error when using an invalid email', (done) => {
@@ -190,8 +239,17 @@ describe('Login', () => {
         .send({
             "firstname": "ABC",
             "lastname": "DEF",
-            "email": "abc@def.nl"
+            "email": "abcdef.nl"
         })
-    done();
+        .end((err, res) => {
+            res.should.have.status(412);
+            res.body.should.be.a('object');
+
+            let error = res.body
+            error.should.have.property('message')
+            error.should.have.property('code').equals(412)
+            error.should.have.property('datetime')
+            done();
+        })
   });
 });
