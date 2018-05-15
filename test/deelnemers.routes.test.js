@@ -97,23 +97,61 @@ describe('deelnemers API DELETE', () => {
     });
 
     it('should return a participant when posting a valid object', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
+        chai.request(server)
+            .post('api/studentenhuis/:id/maaltijd/:maaltijdId/deelnemers')
+            .send({
+                "UserID": 1,
+                "StudentenhuisID": 1,
+                "MaaltijdID": 1
+            })
+            .end((err, res) =>{
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+
+                let response = res.body
+                response.should.have.property('UserID').equals(1)
+                response.should.have.property('StudentenhuisID').equals(1)
+                response.should.have.property('MaaltijdID').equals(1)
+                done();
+            });
         done();
     });
 
     it('should throw an error when StudentenhuisID is missing', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done();
+        chai.request(server)
+            .post('api/studentenhuis/:id/maaltijd/:maaltijdId/deelnemers')
+            .send({
+                "UserID": 1,
+                "MaaltijdID": 1
+            })
+            .end((err, res) =>{
+                res.should.have.status(404);
+                res.body.should.be.a('object');
+
+                let error = res.body
+                error.should.have.property('message')
+                error.should.have.property('code').equals(404)
+                error.should.have.property('datetime')
+                done();
+            });
     });
 
     it('should throw an error when MaaltijdID is missing', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
-        done();
+        chai.request(server)
+            .post('api/studentenhuis/:id/maaltijd/:maaltijdId/deelnemers')
+            .send({
+                "UserID": 1,
+                "StudentenhuisID": 1
+            })
+            .end((err, res) =>{
+                res.should.have.status(404);
+                res.body.should.be.a('object');
+
+                let error = res.body
+                error.should.have.property('message')
+                error.should.have.property('code').equals(404)
+                error.should.have.property('datetime')
+                done();
+            });
     });
 });
