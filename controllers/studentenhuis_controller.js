@@ -8,45 +8,44 @@ const ApiError = require('../model/ApiError')
 let houselist = [];
 
 module.exports = {
-  makeStudenthome(req, res, next) {
-      console.log('make a student home');
+    makeStudenthome(req, res, next) {
+        console.log('make a student home');
 
-      const id = req.body.id;
-      const naam = req.body.naam;
-      const adres = req.body.adres;
-      let userId = 1; // To be changed according to token values
-      //const userId = req.body.UserID
-      console.log('We got id: ' + id + ' of ' + naam + ' locaded at ' + adres + ' form user: ' + userId)
+        const id = 1;
+        const naam = req.body.naam;
+        const adres = req.body.adres;
+        let userId = 1; // To be changed according to token values
+        //const userId = req.body.UserID
+        console.log('name of ' + naam + ' locaded at ' + adres + ' form user: ' + userId)
 
-      try{
-          expect(id).to.be.at.least(0 ["Id munst be a number and above 0"]);
-          expect(userId).to.be.at.least(0 ["UserId munst be a number and above 0"]);
-          expect(naam).to.be.a('string');
-          expect(adres).to.be.a('string');
-          expect(naam).to.not.to.be.empty;
-          expect(adres).to.not.to.be.empty;
-          expect(naam.length).to.be.above(2 ["the length of the name should be above 2 charcters"]);
-          expect(adres.length).to.be.above(2 ["the length of the adres should be above 2 charcters"]);
-          expect(res.body).should.be.a('object');
-      }catch(ex) {
-          const error = new ApiError(ex.toString(), 422)
-          next(error)
-          return
-      }
-
-      let studenthome = new house(id, naam, adres, userId);
-      houselist.push(studenthome)
-
-    db.query('INSERT INTO `studentenhuis` (`Naam`, `Adres`, `UserID`) VALUES ( "' + naam + '", "' + adres + '", "' + userId +')', (error, rows, fields) => {
-        if(error) {
-            next(error);
-        } else {
-            console.log(req.body.id);
-            res.sendStatus(200);
+        try{
+            //expect(id).to.be.at.least(0, "Id munst be a number and above 0");
+            expect(naam).to.be.a('string');
+            expect(adres).to.be.a('string');
+            expect(naam).to.not.to.be.empty;
+            expect(adres).to.not.to.be.empty;
+            expect(naam.length).to.be.above(2, "the length of the name should be above 2 charcters");
+            expect(adres.length).to.be.above(2, "the length of the adres should be above 2 charcters");
+            expect(res.body).should.be.a('object');
+        }catch(ex) {
+            const error = new ApiError(ex.toString(), 422)
+            next(error)
+            return
         }
-    });
 
-      // let home = req.body;
+        let studenthome = new house(id, naam, adres, userId);
+        houselist.push(studenthome)
+
+        db.query('INSERT INTO `studentenhuis` (`Naam`, `Adres`, `UserID`) VALUES ( "' + naam + '", "' + adres + '", "' + userId +')', (error, rows, fields) => {
+            if(error) {
+                next(error);
+            } else {
+                console.log(req.body.id);
+                res.sendStatus(200);
+            }
+        });
+
+        // let home = req.body;
       // let query ={
       //     sql: 'INSERT INTO `studentenhuis` (Naam, Adres, UserID) VALUES (?, ?, ?)',
       //     values: [home.naam, home.aders, home.UserID]
