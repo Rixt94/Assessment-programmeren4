@@ -98,7 +98,7 @@ describe('deelnemers API DELETE', () => {
 
     it('should return a participant when posting a valid object', (done) => {
         chai.request(server)
-            .post('api/studentenhuis/:id/maaltijd/:maaltijdId/deelnemers')
+            .delete('api/studentenhuis/:id/maaltijd/:maaltijdId/deelnemers')
             .send({
                 "UserID": 1,
                 "StudentenhuisID": 1,
@@ -119,7 +119,7 @@ describe('deelnemers API DELETE', () => {
 
     it('should throw an error when StudentenhuisID is missing', (done) => {
         chai.request(server)
-            .post('api/studentenhuis/:id/maaltijd/:maaltijdId/deelnemers')
+            .delete('api/studentenhuis/:id/maaltijd/:maaltijdId/deelnemers')
             .send({
                 "UserID": 1,
                 "MaaltijdID": 1
@@ -138,7 +138,7 @@ describe('deelnemers API DELETE', () => {
 
     it('should throw an error when MaaltijdID is missing', (done) => {
         chai.request(server)
-            .post('api/studentenhuis/:id/maaltijd/:maaltijdId/deelnemers')
+            .delete('api/studentenhuis/:id/maaltijd/:maaltijdId/deelnemers')
             .send({
                 "UserID": 1,
                 "StudentenhuisID": 1
