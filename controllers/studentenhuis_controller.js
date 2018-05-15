@@ -101,8 +101,20 @@ module.exports = {
           next(error)
           return
       }
+      const naam = req.body.naam;
+      const adres = req.body.adres;
+      // db.query('SELECT ID FROM studentenhuis WHERE Name = "' + req.body.naam + '" AND Adres = "' + req.body.adres + '"',(error, rows, fields) => {
+      //     if(error) {
+      //         next(error);
+      //     } else {
+      //         if(!rows[0]) {
+      //             //User exists
+      //             res.status(409).json({"error": "Studenthome already deleted"});
+      //         }
+      //     }
+      // });
 
-    db.query('DELETE FROM studentenhuis WHERE ID='+ id, (error, rows, fields)  =>{
+      db.query('DELETE FROM studentenhuis WHERE ID='+ id, (error, rows, fields)  =>{
       if(error){
         next(error);
       }else{
