@@ -25,8 +25,7 @@ module.exports = {
       
       // Test of er een huis met ID bestaat
       
-    }
-    catch(ex) {
+    } catch(ex) {
       console.log(ex.toString());
       const error = new ApiError(ex.toString(), 422);
       next(error);
