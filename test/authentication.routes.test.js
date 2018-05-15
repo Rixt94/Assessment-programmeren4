@@ -42,9 +42,15 @@ describe('Registration', () => {
   });
 
   it('should return an error on GET request', (done) => {
-    //
-    // Hier schrijf je jouw testcase.
-    //
+        .get('/api/register')
+        .end(function (err, res) {
+              res.should.have.status(500);
+              res.should.be.json;
+              res.body.should.be.a('object');
+              res.body.should.have.property('message');
+              res.body.message.should.equal('HIER TREEDT EEN ERROR OP');
+              done();
+        });
     done();
   });
 
