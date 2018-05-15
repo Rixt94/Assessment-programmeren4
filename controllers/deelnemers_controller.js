@@ -8,9 +8,12 @@ module.exports = {
         console.log('added particitant to the meal');
 
         const StudentenhuisID = req.params.id;
-        let userId = 1; // To be changed according to token values
-        //const UserID = req.body.UserID;
+        let UserID = 1; // To be changed according to token values
         const MaaltijdID = req.params.maaltijdId;
+
+        console.log(req.body);
+        console.log("HuisID: " + StudentenhuisID);
+        console.log("MaaltijdID: "+ MaaltijdID);
 
         try {
             expect(UserID).to.be.at.least(0 ["Id munst be a number and above 0"]);
@@ -19,7 +22,8 @@ module.exports = {
             expect(UserID).to.not.to.be.empty;
             expect(StudentenhuisID).to.not.to.be.empty;
             expect(MaaltijdID).to.not.to.be.empty;
-            expect(res.body).should.be.a('object');
+            expect([UserID, StudentenhuisID, MaaltijdID]).to.not.exist();
+            //expect(res.body).should.be.a('object');
         } catch (ex) {
             const error = new ApiError(ex.toString(), 422)
             next(error)
@@ -61,7 +65,8 @@ module.exports = {
             expect(UserID).to.not.to.be.empty;
             expect(StudentenhuisID).to.not.to.be.empty;
             expect(MaaltijdID).to.not.to.be.empty;
-            expect(res.body).should.be.a('object');
+            expect(UserID, StudentenhuisID, MaaltijdID).to.exist();
+            //expect(res.body).should.be.a('object');
         } catch (ex) {
             const error = new ApiError(ex.toString(), 422)
             next(error)

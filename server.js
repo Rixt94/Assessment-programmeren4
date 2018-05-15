@@ -20,7 +20,7 @@ app.use('*', function(req, res, next){
 
 app.use('/api', require('./routes/studentenhuis_routes'));
 // app.use('/api', require('./routes/authentication_routes'));
-// app.use('/api', require('./routes/deelnemers_routes'));
+app.use('/api', require('./routes/deelnemers_routes'));
 // app.use('/api', require('./routes/maaltijd_routes'));
 
 app.get('/test', function (req, res, next) {
