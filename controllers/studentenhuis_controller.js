@@ -1,7 +1,9 @@
 //const auth =  require('../auth/authentication');
 const assert = require('assert');
 const db = require('../config/db');
-const house = require('../model/StudentenHuis')
+const expect = require('chai').expect;
+const house = require('../model/StudentenHuis');
+const ApiError = require('../model/ApiError')
 
 let houselist = [];
 
@@ -10,9 +12,10 @@ module.exports = {
       console.log('make a student home');
 
       const id = req.body.id;
-      const naam = req.body.Naam;
-      const adres = req.body.Adres;
-      const userId = req.body.UserID
+      const naam = req.body.naam;
+      const adres = req.body.adres;
+      let userId = 1; // To be changed according to token values
+      //const userId = req.body.UserID
       console.log('We got id: ' + id + ' of ' + naam + ' locaded at ' + adres + ' form user: ' + userId)
 
       try{
@@ -34,37 +37,35 @@ module.exports = {
       let studenthome = new house(id, naam, adres, userId);
       houselist.push(studenthome)
 
-      let home = req.body;
-      let query ={
-          sql: 'INSERT INTO `studentenhuis` (Naam, Adres, UserID) VALUES (?, ?, ?)',
-          values: [home.naam, home.aders, home.UserID]
-      };
+    db.query('INSERT INTO `studentenhuis` (`Naam`, `Adres`, `UserID`) VALUES ( "' + naam + '", "' + adres + '", "' + userId +')', (error, rows, fields) => {
+        if(error) {
+            next(error);
+        } else {
+            console.log(req.body.id);
+            res.sendStatus(200);
+        }
+    });
 
-      console.dir(home);
-      console.log("de query: " + query.sql);
-
-      res.contentType('application/json');
-      db.query(query , (error, rows, fields) => {
-          if(error){
-              res.status(400);
-              res.json(error);
-          }else {
-              res.status(200);
-              res.json(rows);
-          }
-
-      }).end();
-
-
-    // db.query('INSERT INTO `studentenhuis` (Naam, Adres, UserID) VALUES (\' ' + naam + ' \', \' ' + adres +'  \', '+ userId +')', (error, rows, fields) => {
-    //     if (error) {
-    //         next(error);
-    //     } else {
-    //         res.status(200).json({
-    //             result: rows
-    //         }).end();
-    //     }
-    // });
+      // let home = req.body;
+      // let query ={
+      //     sql: 'INSERT INTO `studentenhuis` (Naam, Adres, UserID) VALUES (?, ?, ?)',
+      //     values: [home.naam, home.aders, home.UserID]
+      // };
+      //
+      // console.dir(home);
+      // console.log("de query: " + query.sql);
+      //
+      // res.contentType('application/json');
+      // db.query(query , (error, rows, fields) => {
+      //     if(error){
+      //         res.status(400);
+      //         res.json(error);
+      //     }else {
+      //         res.status(200);
+      //         res.json(rows);
+      //     }
+      //
+      // });
   },
   putStudenthome(req, res, next) {
       console.log('change a student home');
