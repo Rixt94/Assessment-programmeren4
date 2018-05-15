@@ -1,7 +1,3 @@
-/**
- * Testcases aimed at testing the authentication process. 
- */
- 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../server');
@@ -14,50 +10,71 @@ chai.use(chaiHttp);
 let validToken;
 
 describe('Registration', () => {
-  it('should return a token when providing valid information', (done) => {
-      chai.request(server)
-          .post('/api/register')
-          .send(register_details)
-          .end((err, res) => { // when we get a response from the endpoint
-              // in other words,
-              // the res object should have a status of 201
-              res.should.have.status(201);
-              // the property, res.body.state, we expect it to be true.
-              expect(res.body.state).to.be.true;
-
-              // follow up with login
-              chai.request(server)
-                  .post('/api/v1/auth/login')
-                  .send(login_details)
-                  .end((err, res) => {
-                      res.should.have.status(200);
-                      expect(res.body.state).to.be.true;
-                      res.body.should.have.property('token');
-
-                      let token = res.body.token;
-                      // follow up with requesting user protected page
-                      done(); // Don't forget the done callback to indicate we're done!
-                      })
-                  })
+   it('should return a token when providing valid information', (done) => {
+  //     chai.request(server)
+  //         .post('/api/register')
+  //         .send(register_details)
+  //         .end((err, res) => { // when we get a response from the endpoint
+  //             // in other words,
+  //             // the res object should have a status of 201
+  //             res.should.have.status(201);
+  //             // the property, res.body.state, we expect it to be true.
+  //             expect(res.body.state).to.be.true;
+  //
+  //             // follow up with login
+  //             chai.request(server)
+  //                 .post('/api/v1/auth/login')
+  //                 .send(login_details)
+  //                 .end((err, res) => {
+  //                     res.should.have.status(200);
+  //                     expect(res.body.state).to.be.true;
+  //                     res.body.should.have.property('token');
+  //
+  //                     let token = res.body.token;
+  //                     // follow up with requesting user protected page
+  //                     done(); // Don't forget the done callback to indicate we're done!
+  //                     })
+  //                 })
   });
 
   it('should return an error on GET request', (done) => {
+      chai.request(server)
         .get('/api/register')
         .end(function (err, res) {
-              res.should.have.status(500);
-              res.should.be.json;
-              res.body.should.be.a('object');
-              res.body.should.have.property('message');
-              res.body.message.should.equal('HIER TREEDT EEN ERROR OP');
-              done();
+            res.should.have.status(500);
+            res.body.should.be.a('object');
+
+            let error = res.body
+            error.should.have.property('message')
+            error.should.have.property('code').equals(500)
+            error.should.have.property('datetime')
+            done();
         });
     done();
   });
 
   it('should throw an error when the user already exists', (done) => {
-    //
-    // Hier schrijf je jouw testcase.
-    //
+      chai.request(server)
+          .post('api/register')
+          .send([{
+              "firstname": "ABC",
+              "lastname": "DEF",
+              "email": "abc@def.nl"
+          },{
+              "firstname": "ABC",
+              "lastname": "DEF",
+              "email": "abc@def.nl"
+          }])
+          .end((err, res) => {
+              res.should.have.status(400);
+              res.body.should.be.a('object');
+
+              let error = res.body
+              error.should.have.property('message')
+              error.should.have.property('code').equals(400)
+              error.should.have.property('datetime')
+              done();
+          })
     done();
   });
 
@@ -81,9 +98,13 @@ describe('Registration', () => {
   });
 
   it('should throw an error when firstname is shorter than 2 chars', (done) => {
-    //
-    // Hier schrijf je jouw testcase.
-    //
+      chai.request(server)
+          .post('api/register')
+          .send({
+              "firstname": "ABC",
+              "lastname": "DEF",
+              "email": "abc@def.nl"
+          })
     done();
   });
 
@@ -107,46 +128,70 @@ describe('Registration', () => {
   });
 
   it('should throw an error when lastname is shorter than 2 chars', (done) => {
-    //
-    // Hier schrijf je jouw testcase.
-    //
+      chai.request(server)
+          .post('api/register')
+          .send({
+              "firstname": "ABC",
+              "lastname": "DEF",
+              "email": "abc@def.nl"
+          })
     done();
   });
 
   it('should throw an error when email is invalid', (done) => {
-    //
-    // Hier schrijf je jouw testcase.
-    //
+      chai.request(server)
+          .post('api/register')
+          .send({
+              "firstname": "ABC",
+              "lastname": "DEF",
+              "email": "abc@def.nl"
+          })
     done();
   });
-})
+});
 
 describe('Login', () => {
   it('should return a token when providing valid information', (done) => {
-    //
-    // Hier schrijf je jouw testcase.
-    //
+      chai.request(server)
+          .post('api/login')
+          .send({
+              "firstname": "ABC",
+              "lastname": "DEF",
+              "email": "abc@def.nl"
+          })
     done();
   });
 
   it('should throw an error when email does not exist', (done) => {
-    //
-    // Hier schrijf je jouw testcase.
-    //
+      chai.request(server)
+          .post('api/login')
+          .send({
+              "firstname": "ABC",
+              "lastname": "DEF",
+              "email": "abc@def.nl"
+          })
     done();
   });
 
   it('should throw an error when email exists but password is invalid', (done) => {
-    //
-    // Hier schrijf je jouw testcase.
-    //
+      chai.request(server)
+          .post('api/login')
+          .send({
+              "firstname": "ABC",
+              "lastname": "DEF",
+              "email": "abc@def.nl"
+          })
     done();
   });
 
   it('should throw an error when using an invalid email', (done) => {
-    //
-    // Hier schrijf je jouw testcase.
-    //
+    chai.request(server)
+        .post('api/login')
+        .send({
+            "firstname": "ABC",
+            "lastname": "DEF",
+            "email": "abc@def.nl"
+        })
     done();
   });
 });
