@@ -15,6 +15,8 @@ module.exports = {
     const MaaltijdID = req.body.MaaltijdID;
     console.log( voornaam +' ' + achternaam + 'is toegevoed aan de lijst');
 
+    let par = new Participant(UserID, )
+
       try{
           expect(UserID).to.be.at.least(0 ["Id munst be a number and above 0"]);
           expect(StudentenhuisID).to.be.at.least(0 ["UserId munst be a number and above 0"]);
