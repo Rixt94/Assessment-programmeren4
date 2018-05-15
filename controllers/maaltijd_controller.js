@@ -7,9 +7,9 @@ const ApiError = require('../model/ApiError');
 module.exports = {
   postMeal(req, res, next){
     console.log('Post new meal for house : ');
-    
+
     let userId = 1; // To be changed according to token values
-    
+
     try {
       assert(typeof (req.body.naam) === 'string', 'Naam must be a string');
       assert(typeof (req.body.beschrijving) === 'string', 'beschrijving must be a string');
@@ -22,9 +22,9 @@ module.exports = {
       // expect(req.params.id).to.be.a('number', 'HuisId 1');     // FIX OOK DEZE LATER, GETAL IN URL WORDT NIET GEZIEN ALS NUMBER
       // expect(req.params.id % 1).to.be.equal(0, 'HuisId 2');
       expect(req.body.prijs).to.be.least(0, "Prijs");
-      
+
       // Test of er een huis met ID bestaat
-      
+
     }
     catch(ex) {
       console.log(ex.toString());
@@ -32,7 +32,7 @@ module.exports = {
       next(error);
       return;
     }
-    
+
     db.query('INSERT INTO `maaltijd`(`Naam`, `Beschrijving`, `Ingredienten`, `Allergie`, `Prijs`, `UserID`, `StudentenhuisID`) VALUES ( "' + req.body.naam + '", "' + req.body.beschrijving + '", "' + req.body.ingredienten + '", "' + req.body.allergie + '", ' + req.body.prijs + ', ' + userId + ', ' + req.params.id + ' )', (error, rows, fields) => {
       if(error) {
         next(error);
@@ -41,12 +41,12 @@ module.exports = {
         res.sendStatus(200);
       }
     });
-    
+
   },
 
   getAllMeals(req, res, next) {
     console.log("get all meals");
-    
+
     db.query('SELECT * FROM maaltijd', (error, rows, fields) => {
       if(error) {
         next(error);

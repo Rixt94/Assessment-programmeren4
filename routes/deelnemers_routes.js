@@ -4,7 +4,7 @@ var controller = require('../controllers/deelnemers_controller');
 
 module.exports = {}
 
-routes.post('/studentenhuis/:id/maaltijd/:maaltijdId', controller.postParticipant)
+routes.post('/studentenhuis/:id/maaltijd/:maaltijdId/deelnemers', controller.postParticipant)
 routes.get('/studentenhuis/:id/maaltijd/:maaltijdId/deelnemers', controller.getAllParticipants)
 routes.delete('/studentenhuis/:id/maaltijd/:maaltijdId/deelnemers', controller.deleteParticipant)
 
