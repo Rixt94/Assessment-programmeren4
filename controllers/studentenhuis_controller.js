@@ -15,7 +15,7 @@ module.exports = {
       const userId = req.body.UserID
       console.log('We got id: ' + id + ' of ' + naam + ' locaded at ' + adres + ' form user: ' + userId)
 
-      ry{
+      try{
           expect(id).to.be.at.least(0 ["Id munst be a number and above 0"]);
           expect(userId).to.be.at.least(0 ["UserId munst be a number and above 0"]);
           expect(naam).to.be.a('string');
@@ -32,7 +32,7 @@ module.exports = {
       }
 
       let studenthome = new house(id, naam, adres, userId);
-      // houselist.push(studenthome)
+      houselist.push(studenthome)
 
       let home = req.body;
       let query ={
