@@ -5,8 +5,6 @@ const server = require('../server');
 chai.should();
 chai.use(chaiHttp);
 
-// After successful registration we have a valid token. We export this token
-// for usage in other testcases that require login.
 let validToken;
 
 describe('Registration', () => {
@@ -16,7 +14,7 @@ describe('Registration', () => {
            .send({
                "voornaam": "Rixt",
                "achternaam": "Hoedt",
-               "email": "test123@avans.nl",
+               "email": "test@avans.nl",
                "password": "geheimpje"
            })
            .end((err, res) => {

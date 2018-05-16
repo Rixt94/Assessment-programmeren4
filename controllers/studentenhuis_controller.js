@@ -8,13 +8,15 @@ module.exports = {
     makeStudenthome(req, res, next) {
         console.log('make a student home');
 
+        const id = 1;
         const naam = req.body.naam;
         const adres = req.body.adres;
 
         console.log(req.body);
         console.log("Naam: " + naam);
         console.log("Adres: " + adres);
-        let userId = req.header.tokenid;
+        let userId = 1; // To be changed according to token values
+        //const userId = req.body.UserID
         console.log('name of ' + naam + ' locaded at ' + adres + ' form user: ' + userId)
 
         let studentenhuis;
@@ -60,7 +62,7 @@ module.exports = {
       console.log(req.body);
       console.log("Naam: " + naam);
       console.log("Adres: " + adres);
-      let userId = req.header.tokenid;
+      let userId = 1; // To be changed according to token values
       console.log('We got id: ' + id + ' of ' + naam + ' locaded at ' + adres + ' form user: ' + userId)
 
       try{
@@ -101,6 +103,7 @@ module.exports = {
 
       try{
           expect(id).to.exist;
+          expect(id).to.be.above(0, "id should be above the zerro");
           //expect(res.body).should
           // .be.a('object');
       }catch(ex) {
@@ -144,22 +147,23 @@ module.exports = {
       }
     });
   },
-  getStudenthomeById (req, res, next){
-    const id = req.params.id || '';
-    console.log("get studenthome with id: " + id);
-    if (id !== ''){
-        db.query('SELECT * FROM studentenhuis WHERE ID=' + id, (error, rows, fields) => {
-            if(error){
-                next(error);
-            } else {
-                res.status(200).json({
-                    result: rows
-                }).end();
-            }
-        });
-    }else{
-        next(new ApiError(ex.toString(), 404))
-    }
+    getStudenthomeById(req, res, next) {
+    try {
+        const id = req.params.id || '';
+        if(id !== '') {
+            db.query('SELECT * FROM studentenhuis WHERE ID=' + id, (error, rows, fields) => {
+                if(error) {
+                    next(error);
+                } else {
+                    res.status(200).json(rows).end();
+                }
+            });
+        } else {
+            next(new ApiError('Id not found',404));
+        }
 
-  }
+    } catch (ex) {
+        next(new ApiError(ex.toString(), 404));
+    }
+    }
 }
