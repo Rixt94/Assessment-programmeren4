@@ -113,13 +113,24 @@ module.exports = {
       const naam = req.body.naam;
       const adres = req.body.adres;
 
-      db.query('DELETE FROM studentenhuis WHERE ID='+ id, (error, rows, fields)  =>{
-      if(error){
-        next(error);
-      }else{
-        console.log('You have deleted nr: ' + id);
-        res.status(200).end();
-      }
+      db.query('SELECT Naam FROM studentenhuis WHERE ID = ' + id ,(error, rows, fields) => {
+          if(error) {
+              next(error);
+          } else {
+              if(rows[0]) {
+                  //User exists
+                  db.query('DELETE FROM studentenhuis WHERE ID='+ id, (error, rows, fields)  =>{
+                      if(error){
+                          next(error);
+                      }else{
+                          console.log('You have deleted nr: ' + id);
+                          res.status(200).end();
+                      }
+                  });
+              }else{
+                  res.status(409).json({"error": "already deleted"});
+              }
+          }
       });
 
   },
