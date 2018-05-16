@@ -3,7 +3,6 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const ApiError = require('./model/ApiError');
 const config = require('./config/config');
-let controller = require('./controllers/authentication_controller');
 
 const port = process.env.PORT || config.webPort;
 
@@ -19,12 +18,15 @@ app.use('*', function(req, res, next){
   next();
 });
 
-app.use('/api', require('./routes/authentication_routes'));
-app.all('*', controller.validate);
-
 app.use('/api', require('./routes/studentenhuis_routes'));
+app.use('/api', require('./routes/authentication_routes'));
 app.use('/api', require('./routes/deelnemers_routes'));
 app.use('/api', require('./routes/maaltijd_routes'));
+
+app.get('/test', function (req, res, next) {
+  console.log("test");
+  res.status(200).end();
+});
 
 app.use('*', (req, res, next) => {
   console.log('This endpoint does not exsist');
@@ -33,10 +35,12 @@ app.use('*', (req, res, next) => {
 
 app.use((err, req, res, next) => {
   console.log('Catch-all error handler was called.');
+  console.log(err.toString());
 
-  const error = new ApiError(err.toString(), 404);
+  // const error = new ApiError(err.toString(), 404);
 
-  res.status(404).json(error).end();
+  // res.status(404).json(error).end();
+  res.status(404).json(err.toString()).end();
 });
 
 app.listen(port, () => {

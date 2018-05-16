@@ -50,93 +50,104 @@ module.exports = {
             }
         });
     },
-    putStudenthome(req, res, next) {
-        console.log('change a student home');
+  putStudenthome(req, res, next) {
+      console.log('change a student home');
 
-        const id = req.params.id;
-        const naam = req.body.naam;
-        const adres = req.body.adres;
+      const id = req.params.id;
+      const naam = req.body.naam;
+      const adres = req.body.adres;
 
-        console.log(req.body);
-        console.log("Naam: " + naam);
-        console.log("Adres: " + adres);
-        let userId = req.header.tokenid;
-        console.log('We got id: ' + id + ' of ' + naam + ' locaded at ' + adres + ' form user: ' + userId)
+      console.log(req.body);
+      console.log("Naam: " + naam);
+      console.log("Adres: " + adres);
+      let userId = req.header.tokenid;
+      console.log('We got id: ' + id + ' of ' + naam + ' locaded at ' + adres + ' form user: ' + userId)
 
-        try{
-            //expect(id).to.be.at.least(0, "Id munst be a number and above 0");
-            expect(naam).to.be.a('string');
-            expect(adres).to.be.a('string');
-            expect(naam).to.not.to.be.empty;
-            expect(adres).to.not.to.be.empty;
-            expect(naam.length).to.be.above(2, "the length of the name should be above 2 charcters");
-            expect(adres.length).to.be.above(2, "the length of the adres should be above 2 charcters");
-            //expect(res.body).should.be.a('object');
-        }catch(ex) {
-            const error = new ApiError(ex.toString(), 422)
-            next(error)
-            return
-        }
+      try{
+          //expect(id).to.be.at.least(0, "Id munst be a number and above 0");
+          expect(naam).to.be.a('string');
+          expect(adres).to.be.a('string');
+          expect(naam).to.not.to.be.empty;
+          expect(adres).to.not.to.be.empty;
+          expect(naam.length).to.be.above(2, "the length of the name should be above 2 charcters");
+          expect(adres.length).to.be.above(2, "the length of the adres should be above 2 charcters");
+          //expect(res.body).should.be.a('object');
+      }catch(ex) {
+          const error = new ApiError(ex.toString(), 422)
+          next(error)
+          return
+      }
 
-        let studentenhuis;
-        try {
-            assert(typeof(body) === "object", "Body is not defined");
-            studentenhuis = new house(body.naam, body.adres);
-        } catch (ex) {
-            next(new Error(412, ex.toString()));
-            return;
-        }
+      let studentenhuis;
+      try {
+          assert(typeof(body) === "object", "Body is not defined");
+          studentenhuis = new house(body.naam, body.adres);
+      } catch (ex) {
+          next(new Error(412, ex.toString()));
+          return;
+      }
 
-        db.query('UPDATE `studentenhuis` SET Naam = "' + naam + '", Adres = "' + adres + '"WHERE ID = ' + userId, (error, rows, fields) => {
-            if(error) {
-                next(error);
-            } else {
-                console.log(req.body.id);
-                res.sendStatus(200);
-            }
-        });
-    },
-    deleteStudenthome(req, res, next) {
-        const id = req.params.id;
+      db.query('UPDATE `studentenhuis` SET Naam = "' + naam + '", Adres = "' + adres + '"WHERE ID = ' + userId, (error, rows, fields) => {
+          if(error) {
+              next(error);
+          } else {
+              console.log(req.body.id);
+              res.sendStatus(200);
+          }
+      });
+  },
+  deleteStudenthome(req, res, next) {
+    const id = req.params.id;
 
-        try{
-            expect(id).to.exist;
-            //expect(res.body).should
-            // .be.a('object');
-        }catch(ex) {
-            const error = new ApiError(ex.toString(), 422)
-            next(error)
-            return
-        }
-        const naam = req.body.naam;
-        const adres = req.body.adres;
+      try{
+          expect(id).to.exist;
+          //expect(res.body).should
+          // .be.a('object');
+      }catch(ex) {
+          const error = new ApiError(ex.toString(), 422)
+          next(error)
+          return
+      }
+      const naam = req.body.naam;
+      const adres = req.body.adres;
 
-        db.query('DELETE FROM studentenhuis WHERE ID='+ id, (error, rows, fields)  =>{
-            if(error){
-                next(error);
-            }else{
-                console.log('You have deleted nr: ' + id);
-                res.status(200).end();
-            }
-        });
+      db.query('SELECT Naam FROM studentenhuis WHERE ID = ' + id ,(error, rows, fields) => {
+          if(error) {
+              next(error);
+          } else {
+              if(rows[0]) {
+                  //User exists
+                  db.query('DELETE FROM studentenhuis WHERE ID='+ id, (error, rows, fields)  =>{
+                      if(error){
+                          next(error);
+                      }else{
+                          console.log('You have deleted nr: ' + id);
+                          res.status(200).end();
+                      }
+                  });
+              }else{
+                  res.status(409).json({"error": "already deleted"});
+              }
+          }
+      });
 
-    },
-    getAllStudenthome(req, res, next) {
-        console.log("get all studenthomes");
-        db.query('SELECT * FROM studentenhuis', (error, rows, fields) => {
-            if(error){
-                next(error);
-            } else {
-                res.status(200).json({
-                    result: rows
-                }).end();
-            }
-        });
-    },
-    getStudenthomeById (req, res, next){
-        const id = req.params.id;
-        console.log("get studenthome with id: " + id);
-
+  },
+  getAllStudenthome(req, res, next) {
+    console.log("get all studenthomes");
+    db.query('SELECT * FROM studentenhuis', (error, rows, fields) => {
+      if(error){
+        next(error);
+      } else {
+        res.status(200).json({
+          result: rows
+        }).end();
+      }
+    });
+  },
+  getStudenthomeById (req, res, next){
+    const id = req.params.id || '';
+    console.log("get studenthome with id: " + id);
+    if (id !== ''){
         db.query('SELECT * FROM studentenhuis WHERE ID=' + id, (error, rows, fields) => {
             if(error){
                 next(error);
@@ -146,5 +157,9 @@ module.exports = {
                 }).end();
             }
         });
+    }else{
+        next(new ApiError(ex.toString(), 404))
     }
+
+  }
 }
