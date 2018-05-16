@@ -4,8 +4,6 @@ const expect = require('chai').expect;
 const house = require('../model/StudentenHuis');
 const ApiError = require('../model/ApiError')
 
-let houselist = [];
-
 module.exports = {
     makeStudenthome(req, res, next) {
         console.log('make a student home');
@@ -21,8 +19,14 @@ module.exports = {
         //const userId = req.body.UserID
         console.log('name of ' + naam + ' locaded at ' + adres + ' form user: ' + userId)
 
-        let studenthome = new house(id, naam, adres, userId);
-        houselist.push(studenthome)
+        let studentenhuis;
+        try {
+            assert(typeof(body) === "object", "Body is not defined");
+            studentenhuis = new house(body.naam, body.adres);
+        } catch (ex) {
+            next(new Error(412, ex.toString()));
+            return;
+        }
 
         try{
             //expect(id).to.be.at.least(0, "Id munst be a number and above 0");
@@ -61,7 +65,6 @@ module.exports = {
       let userId = 1; // To be changed according to token values
       console.log('We got id: ' + id + ' of ' + naam + ' locaded at ' + adres + ' form user: ' + userId)
 
-
       try{
           //expect(id).to.be.at.least(0, "Id munst be a number and above 0");
           expect(naam).to.be.a('string');
@@ -77,8 +80,14 @@ module.exports = {
           return
       }
 
-      let studenthome = new house(id, naam, adres, userId);
-      houselist.push(studenthome)
+      let studentenhuis;
+      try {
+          assert(typeof(body) === "object", "Body is not defined");
+          studentenhuis = new house(body.naam, body.adres);
+      } catch (ex) {
+          next(new Error(412, ex.toString()));
+          return;
+      }
 
       db.query('UPDATE `studentenhuis` SET Naam = "' + naam + '", Adres = "' + adres + '"WHERE ID = ' + userId, (error, rows, fields) => {
           if(error) {
