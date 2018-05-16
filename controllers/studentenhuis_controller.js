@@ -147,17 +147,21 @@ module.exports = {
     });
   },
   getStudenthomeById (req, res, next){
-    const id = req.params.id;
+    const id = req.params.id || '';
     console.log("get studenthome with id: " + id);
-    
-    db.query('SELECT * FROM studentenhuis WHERE ID=' + id, (error, rows, fields) => {
-      if(error){
-          next(error);
-      } else {
-        res.status(200).json({
-            result: rows
-        }).end();
-      }
-    });
+    if (id !== ''){
+        db.query('SELECT * FROM studentenhuis WHERE ID=' + id, (error, rows, fields) => {
+            if(error){
+                next(error);
+            } else {
+                res.status(200).json({
+                    result: rows
+                }).end();
+            }
+        });
+    }else{
+        next(new ApiError(ex.toString(), 404))
+    }
+
   }
 }
