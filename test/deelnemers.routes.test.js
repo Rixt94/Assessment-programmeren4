@@ -20,7 +20,6 @@ describe('deelnemers API POST', () => {
                 res.should.have.status(404);
                 done();
             });
-        done();
     });
 
     it('should throw an error when StudentenhuisID is missing', (done) => {
@@ -33,9 +32,9 @@ describe('deelnemers API POST', () => {
             })
             .end((err, res) =>{
                 res.should.have.status(404);
-
+                done();
             });
-        done();
+        
     });
 
     it('should throw an error when MaaltijdID is missing', (done) => {
@@ -48,9 +47,9 @@ describe('deelnemers API POST', () => {
             })
             .end((err, res) =>{
                 res.should.have.status(404);
-
+                done();
             });
-        done();
+        
     });
 });
 
@@ -68,8 +67,6 @@ describe('deelnemers API GET', () => {
                 res.should.have.status(404);
                 done();
             });
-        done();
-        done();
     });
 });
 
@@ -87,7 +84,6 @@ describe('deelnemers API DELETE', () => {
                 res.should.have.status(404);
                 done();
             });
-        done();
     });
 
     it('should return a participant when posting a valid object', (done) => {
@@ -101,7 +97,6 @@ describe('deelnemers API DELETE', () => {
             .end((err, res) =>{
                 res.should.have.status(200);
                 res.should.be.a('object')
-
                 done();
             });
     });
@@ -115,7 +110,6 @@ describe('deelnemers API DELETE', () => {
             })
             .end((err, res) =>{
                 res.should.have.status(404);
-
                 done();
             });
     });
@@ -129,7 +123,6 @@ describe('deelnemers API DELETE', () => {
             })
             .end((err, res) =>{
                 res.should.have.status(404);
-
                 done();
             });
     });
