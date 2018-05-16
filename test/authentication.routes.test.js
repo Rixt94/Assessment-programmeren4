@@ -14,17 +14,24 @@ describe('Registration', () => {
        chai.request(server)
            .post('/api/register')
            .send({
-               "firstname": "Jan",
-               "lastname": "Smit",
-               "email": "jsmit@server.nl",
-               "password": "secret"
+               "voornaam": "Rixt",
+               "achternaam": "Hoedt",
+               "email": "test123@avans.nl",
+               "password": "geheimpje"
            })
            .end((err, res) => {
                res.should.have.status(200);
-               res.body.should.be.a('object');
+               //res.body.should.be.a('object');
                let validToken = res.body.token;
 
+               const body = res.body;
+               body.should.have.property('token');
+
                validToken.should.be.a('string')
+               validToken = body.token;
+               module.exports = {
+                   token: validToken
+               }
                done()
            });
   });
@@ -40,15 +47,15 @@ describe('Registration', () => {
 
   it('should throw an error when the user already exists', (done) => {
       chai.request(server)
-          .post('api/register')
+          .post('/api/register')
           .send({
-              "firstname": "ABC",
-              "lastname": "DEF",
-              "email": "abc@def.nl",
-              "password": "string"
+              "voornaam": "Jan",
+              "achternaam": "Smit",
+              "email": "jsmit@server.nl",
+              "password": "secret"
           })
           .end((err, res) => {
-              res.should.have.status(401);
+              res.should.have.status(404);
 
               done();
           })
@@ -57,30 +64,29 @@ describe('Registration', () => {
 
   it('should throw an error when no firstname is provided', (done) => {
       chai.request(server)
-          .post('api/register')
+          .post('/api/register')
           .send({
-              "lastname": "DEF",
-              "email": "abc@def.nl",
-              "password": "string"
+              "Achternaam": "DEF",
+              "Email": "abc@def.nl",
+              "Password": "string"
           })
           .end((err, res) =>{
-              res.should.have.status(412);
-
+              res.should.have.status(404);
               done();
           });
   });
 
   it('should throw an error when firstname is shorter than 2 chars', (done) => {
       chai.request(server)
-          .post('api/register')
+          .post('/api/register')
           .send({
-              "firstname": "A",
-              "lastname": "DEF",
-              "email": "abc@def.nl",
-              "password": "string"
+              "Voornaam": "A",
+              "Achternaam": "DEF",
+              "Email": "abc@def.nl",
+              "Password": "string"
           })
           .end((err, res) =>{
-              res.should.have.status(412);
+              res.should.have.status(404);
 
               done();
           });
@@ -88,14 +94,14 @@ describe('Registration', () => {
 
   it('should throw an error when no lastname is provided', (done) => {
       chai.request(server)
-          .post('api/register')
+          .post('/api/register')
           .send({
-              "firstname": "DEF",
-              "email": "abc@def.nl",
-              "password": "string"
+              "Voornaam": "DEF",
+              "Email": "abc@def.nl",
+              "Password": "string"
           })
           .end((err, res) =>{
-              res.should.have.status(412);
+              res.should.have.status(404);
 
               done();
           });
@@ -103,15 +109,15 @@ describe('Registration', () => {
 
   it('should throw an error when lastname is shorter than 2 chars', (done) => {
       chai.request(server)
-          .post('api/register')
+          .post('/api/register')
           .send({
-              "firstname": "ABC",
-              "lastname": "D",
-              "email": "abc@def.nl",
-              "password": "string"
+              "Voornaam": "ABC",
+              "Achternaam": "D",
+              "Email": "abc@def.nl",
+              "Password": "string"
           })
           .end((err, res) =>{
-              res.should.have.status(412);
+              res.should.have.status(404);
 
               done();
           });
@@ -119,14 +125,14 @@ describe('Registration', () => {
 
   it('should throw an error when email is invalid', (done) => {
       chai.request(server)
-          .post('api/register')
+          .post('/api/register')
           .send({
-              "firstname": "ABC",
-              "lastname": "DEF",
-              "password": "string"
+              "Voornaam": "ABC",
+              "Achternaam": "DEF",
+              "Password": "string"
           })
           .end((err, res) =>{
-              res.should.have.status(401);
+              res.should.have.status(404);
 
               done();
           });
@@ -144,7 +150,7 @@ describe('Login', () => {
             })
             .end((err, res) => {
                 res.should.have.status(200);
-                res.body.should.be.a('object');
+                //res.body.should.be.a('object');
                 let validToken = res.body.token;
 
 
@@ -175,7 +181,7 @@ describe('Login', () => {
                 "password": "thegsadffff"
             })
             .end((err, res) => {
-                res.should.have.status(412)
+                res.should.have.status(401)
                 done()
             });
     });
@@ -188,7 +194,7 @@ describe('Login', () => {
                 "password": "secret"
             })
             .end((err, res) => {
-                res.should.have.status(412)
+                res.should.have.status(401)
                 done()
             });
     })

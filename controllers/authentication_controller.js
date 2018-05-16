@@ -36,7 +36,10 @@ module.exports = {
       } else {
         if(rows[0]) {
           // Generate JWT
-          res.status(200).json(auth.encodeToken(rows[0].ID, rows[0].Email)).end();
+          res.status(200).json({
+              token: auth.encodeToken(rows[0].ID),
+              email: rows[0].Email
+          }).end();
         } else {
           res.status(401).json({"error": "Invalid credentials"});
         }
