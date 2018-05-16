@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const ApiError = require('./model/ApiError');
 const config = require('./config/config');
+let controller = require('./controllers/authentication_controller');
 
 const port = process.env.PORT || config.webPort;
 
@@ -18,15 +19,12 @@ app.use('*', function(req, res, next){
   next();
 });
 
-app.use('/api', require('./routes/studentenhuis_routes'));
 app.use('/api', require('./routes/authentication_routes'));
-// app.use('/api', require('./routes/deelnemers_routes'));
-app.use('/api', require('./routes/maaltijd_routes'));
+app.all('*', controller.validate);
 
-app.get('/test', function (req, res, next) {
-  console.log("test");
-  res.status(200).end();
-});
+app.use('/api', require('./routes/studentenhuis_routes'));
+app.use('/api', require('./routes/deelnemers_routes'));
+app.use('/api', require('./routes/maaltijd_routes'));
 
 app.use('*', (req, res, next) => {
   console.log('This endpoint does not exsist');
