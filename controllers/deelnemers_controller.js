@@ -98,9 +98,9 @@ module.exports = {
                         if (error) {
                             next(error);
                         } else {
-                            res.status(200).json({
-                                result: rows
-                            }).end();
+                            console.log('You have deleted nr: ' + id);
+                            res.status(200).end();
+
                         }
                     });
                 }else{
