@@ -1,19 +1,16 @@
-const auth =  require('../auth/authentication');
 const assert = require('assert');
 const db = require('../config/db');
-const Participant = require('../model/Participant')
-
-let participantslist = [];
+const ApiError = require('../model/ApiError')
 
 module.exports = {
 
     postParticipant(req, res, next) {
-        console.log('added particitant to the mail');
+        console.log('added particitant to the meal');
 
-        const UserID = req.body.UserID;
-        const StudentenhuisID = req.body.StudentenhuisID;
-        const MaaltijdID = req.body.MaaltijdID;
-        console.log(voornaam + ' ' + achternaam + 'is toegevoed aan de lijst');
+        const StudentenhuisID = req.params.id;
+        let userId = 1; // To be changed according to token values
+        //const UserID = req.body.UserID;
+        const MaaltijdID = req.params.maaltijdId;
 
         try {
             expect(UserID).to.be.at.least(0 ["Id munst be a number and above 0"]);
@@ -42,7 +39,7 @@ module.exports = {
     getAllParticipants(req, res, next) {
         console.log("get all participants");
 
-        db.query('SELECT * FROM user', (error, rows, fields) => {
+        db.query('SELECT * FROM deelnemers', (error, rows, fields) => {
             if (error) {
                 next(error);
             } else {
@@ -53,9 +50,9 @@ module.exports = {
         });
     },
     deleteParticipant(req, res, next) {
-        const UserID = req.body.UserID;
-        const StudentenhuisID = req.body.StudentenhuisID;
-        const MaaltijdID = req.body.MaaltijdID;
+        const StudentenhuisID = req.params.id;
+        let userId = 1; // To be changed according to token values
+        const MaaltijdID = req.params.maaltijdId;
 
         try {
             expect(UserID).to.be.at.least(0 ["Id munst be a number and above 0"]);
@@ -77,7 +74,8 @@ module.exports = {
             } else {
                 console.log('You have deleted nr: ' + id);
                 res.status(200).end();
-            };
+            }
+            ;
         });
     }
 }
