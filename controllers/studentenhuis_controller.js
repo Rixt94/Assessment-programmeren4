@@ -8,15 +8,13 @@ module.exports = {
     makeStudenthome(req, res, next) {
         console.log('make a student home');
 
-        const id = 1;
         const naam = req.body.naam;
         const adres = req.body.adres;
 
         console.log(req.body);
         console.log("Naam: " + naam);
         console.log("Adres: " + adres);
-        let userId = 1; // To be changed according to token values
-        //const userId = req.body.UserID
+        let userId = req.header.tokenid;
         console.log('name of ' + naam + ' locaded at ' + adres + ' form user: ' + userId)
 
         let studentenhuis;
@@ -62,7 +60,7 @@ module.exports = {
         console.log(req.body);
         console.log("Naam: " + naam);
         console.log("Adres: " + adres);
-        let userId = 1; // To be changed according to token values
+        let userId = req.header.tokenid;
         console.log('We got id: ' + id + ' of ' + naam + ' locaded at ' + adres + ' form user: ' + userId)
 
         try{

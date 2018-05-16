@@ -8,8 +8,7 @@ module.exports = {
         console.log('added particitant to the meal');
 
         const StudentenhuisID = req.params.id;
-        let userId = 1; // To be changed according to token values
-        //const UserID = req.body.UserID;
+        let userId = req.header.tokenid;
         const MaaltijdID = req.params.maaltijdId;
 
         try {
@@ -51,7 +50,7 @@ module.exports = {
     },
     deleteParticipant(req, res, next) {
         const StudentenhuisID = req.params.id;
-        let userId = 1; // To be changed according to token values
+        let userId = req.header.tokenid;
         const MaaltijdID = req.params.maaltijdId;
 
         try {

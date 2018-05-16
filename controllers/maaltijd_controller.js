@@ -9,8 +9,8 @@ module.exports = {
   postMeal(req, res, next){
     console.log('Post new meal for house : ');
 
-    let userId = 1; // To be changed according to token values
-
+    let userId = req.header.tokenid;
+    
     try {
       assert(typeof (req.body.naam) === 'string', 'Naam must be a string');
       assert(typeof (req.body.beschrijving) === 'string', 'beschrijving must be a string');
@@ -111,8 +111,7 @@ module.exports = {
     
   },
   deleteMeal (req, res, next) {
-    
-    let userId = 1;
+    let userId = req.header.tokenid;
     
     try {
       // expect(req.body.userId).to.be.a('number', 'UserId 1');   

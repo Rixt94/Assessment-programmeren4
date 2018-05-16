@@ -16,6 +16,8 @@ module.exports = {
         console.log('Error handler: ' + err.message);
         res.status((err.status || 401 )).json({error: new Error("Not authorised").message});
       } else {
+        // if token isset 
+        req.header.tokenid = payload.sub;
         next();
       }
     });
