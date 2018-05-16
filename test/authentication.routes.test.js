@@ -24,9 +24,7 @@ describe('Registration', () => {
                res.body.should.be.a('object');
                let validToken = res.body.token;
 
-
                validToken.should.be.a('string')
-
                done()
            });
   });
@@ -36,8 +34,6 @@ describe('Registration', () => {
         .get('/api/register')
         .end(function (err, res) {
             res.should.have.status(404);
-
-            done();
         });
     done();
   });
@@ -130,7 +126,7 @@ describe('Registration', () => {
               "password": "string"
           })
           .end((err, res) =>{
-              res.should.have.status(412);
+              res.should.have.status(401);
 
               done();
           });
